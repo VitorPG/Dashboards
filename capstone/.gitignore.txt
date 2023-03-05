@@ -1,0 +1,2 @@
+#ignore all virtual environments
+cap-venv
