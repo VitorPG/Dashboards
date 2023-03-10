@@ -10,15 +10,16 @@ The steps are pretty straightfoward:
 
 1. Choose a prefered music genre from the 'Favorite Genre' dropdown
 2. Then select a song from that genre in the   'Favorite Song' options
-3. You can select the amount of samples (or recomendations) that will appear on screen (if it shows less than selected is because the dataset does not have that many matches)
-4. The Top Picks display songs with similar characteristics and high popularity (Grade A)
+3. You can select the amount of samples (or recomendations) that will appear on screen (if it shows less than selected it is because the dataset does not have that many matches)
+4. The Top Picks will display songs with similar characteristics and high popularity (Grade A)
 5. The 'U may also like' are songs with similar characterisics and low popularity (Grade not A)
 
-On the Second part, below the sugestions we have some interactive charts to expplore the dataset.
 
-The first shows the correlation between the song's characteristics and its popularity. 
+On the Second part, below the sugestions, we have some interactive charts to explore the dataset.
 
-The second requires the user to select a characteristic and it displays the concentration of songs (for that selection) in each popularity level, separated by track genre. 
+The first chart shows the correlation between the song's characteristics and its popularity. 
+
+The second one requires the user to select a characteristic and it displays the concentration of songs (for that selection) in each popularity level, separated by track genre. 
 
 
 ## Now you have everithing you need to create that special playlist. 
