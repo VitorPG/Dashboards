@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as pt
+import plotly.express as px
+import seaborn as sns
 
 
-df=pd.read_csv('data\dataset.csv',sep=',')
+df = pd.read_csv("capstone/data/dataset.csv")
 df = df.drop(['Unnamed: 0','key','mode','tempo','time_signature','loudness','duration_ms','explicit'],axis=1)
 
 grades=df.copy()
@@ -16,18 +18,25 @@ grades[['popularity','danceability','energy','speechiness','acousticness','instr
 
 #creating info column to avoid duplicates in same song/artist but keep same song name for diferent artists
 grades['infor']=grades.track_name+", " + grades.artists
+df['infor']=df.track_name+", " + df.artists
 
 #drop duplicates from same song in the same genre
 grades.drop_duplicates(subset=['infor','track_genre'],inplace=True)
+df.drop_duplicates(subset=['infor','track_genre'],inplace=True)
+
 
 st.set_page_config(page_title='What to play')
 header=st.container()
 inputs=st.container ()
 recomend=st.container()
-caracteristics=st.container()
+characteristics=st.container()
 
 with header:
-    st.title("Spotify's unnoficial next song suggestor")
+    col3,col4=st.columns([1,3])
+    with col3:
+        st.image('capstone/data/spotify.png')
+    with col4:
+        st.title("Spotify's unnoficial next song suggestor")
 
 
 with inputs:
@@ -50,13 +59,15 @@ match=pd.DataFrame(choice.iloc[:1])
 #print(match)
 
 #filter possible sugestions only to same genre
-genre_df=grades[grades['track_genre']==genre]
+genre_grades=grades[grades['track_genre']==genre]
+genre_df=df[df['track_genre']==genre]
+
 
 sugestions=[]
 
-for row in range(genre_df.shape[0]):
+for row in range(genre_grades.shape[0]):
     
-    linha=genre_df.iloc[[row]].reset_index(drop=True)
+    linha=genre_grades.iloc[[row]].reset_index(drop=True)
     
     #compare similarity between to chosen music and all the rows inside genre sample
     diference=match.compare(linha,align_axis=0)
@@ -80,3 +91,15 @@ with recomend:
 
     st.write('U may also like')
     low_picks= st.table(unpop_sug['infor'].head(n_samples))
+
+with characteristics:
+    st.write( " Your chosen genre is {}, this is how its characteristics fair in relation to popularity.".format(genre) )
+    fig_gen=px.scatter(genre_df,x=['danceability', 'energy', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence'],y='popularity')
+    st.plotly_chart(fig_gen)
+
+    st.selectbox(label="Choose a characteristic",options=['danceability', 'energy', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence'])
+    fig_char=px.box(x=df.track_genre,y=df.popularity,notched=True,labels={'x':'Track Genre','y':'popularity'},title='Distribution of tracks according to popularity and genre')
+    
+    st.plotly_chart(fig_char)
+
+
